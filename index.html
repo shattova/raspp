@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Расписание</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            text-align: center;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 440px;
+            margin: auto;
+            background: white;
+            padding: 20px 20px 0 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 24px;
+        }
+
+		.title_day {
+              margin: 15px 0 15px 25px;
+              height: 46px;
+              font-family: Montserrat;
+              font-size: 25px;
+              font-weight: 700;
+              line-height: 23px;
+			text-align: left;
+		}
+		
+        .odd-week {
+            background: navy;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .even-week {
+            background: green;
+        }
+        .schedule .day, .schedule .day1{
+            background: white;
+            padding: 9px;
+            margin: 10px 0 30px 0;
+            border-radius: 40px;
+  background: linear-gradient(134deg, #ededed 0%, #ffffff 100%);
+  background-blend-mode: normal;
+  box-shadow: -26px -26px 50px rgba(255,255,255,0.9),
+              -26px 26px 50px rgba(216,216,216,0.2),
+              26px -26px 50px rgba(216,216,216,0.2),
+              26px 26px 50px rgba(216,216,216,0.9),
+              inset -1px -1px 2px rgba(216,216,216,0.5),
+              inset 1px 1px 2px rgba(255,255,255,0.3);
+        }
+
+		#day1.hidden,
+#day2.hidden {
+    display: none;
+}
+
+#day1{
+    display: block;
+}
+
+		#day2 {
+			display: none;
+		}
+
+		
+        .numbers {
+            margin-left: 5px;
+			
+        }
+        .circle {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: navy;
+            color: white;
+            border-radius: 50%;
+            font-size: 13px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+	.circle11 {
+            width: 60px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: navy;
+            color: white;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+	    
+	.circle2 {
+	    width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1B5112;
+            color: white;
+            border-radius: 50%;
+            font-size: 13px;
+            font-weight: bold;
+            flex-shrink: 0;
+	}
+
+	.circle22 {
+	    width: 60px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1B5112;
+            color: white;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: bold;
+            flex-shrink: 0;
+	}
+
+    .name {
+        color: white;
+        font-size: 18px;
+        font-weight: 300;
+    }
+        
+        .popup {
+        	position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0D0125;
+            border-radius: 18px;
+			display: none;
+            width: 320px;
+            height: 67px;
+  			align-items: center;
+    		justify-content: center;
+    		text-align: center;
+        }
+
+    .welcome {
+        font-family: Montserrat;
+        font-size: 51px;
+        font-weight: 400;
+        line-height: 58px;
+        text-align: center;
+        color: black;
+    }
+
+    .sunday {
+        font-size: 45px;
+        line-height: 38px;
+
+        margin: 15px 0 15px 25px;
+        height: 46px;
+        font-family: Montserrat;
+        font-weight: 700;
+		text-align: left;
+    }
+
+    .sunday1 {
+        color: black; 
+        font-weight: 400;
+        font-size: 35px;
+
+        margin: 15px 0 15px 25px;
+        height: 46px;
+        font-family: Montserrat;
+		text-align: left;
+    }
+
+	@media (max-width: 391px) {
+		.welcome {
+			font-size: 45px;
+            line-height: 48px;	
+		}
+
+		.sunday {
+			font-size: 35px;
+            line-height: 28px;
+		}
+
+        .sunday1 {
+            font-size: 30px;
+        }
+
+        .toggle-button {
+            font-size: 10px;
+        }
+
+        /* Текст внутри кнопки */
+        .toggle-button::after {
+            content: "нечётная неделя";
+            font-size: 14px;
+        }
+
+        .toggle-checkbox:checked + .toggle-button::after {
+            content: "чётная неделя";
+            font-size: 14px;
+        }
+
+        p {
+            font-size: 13px;
+        }
+		
+	}
+
+
+/* Подложка */
+
+.toggle-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;
+    width: 100%; /* Растягиваем по ширине контейнера */
+}
+
+.toggle-container {
+    position: relative;
+    width: 366px;
+    max-width: 100%; /* Теперь контейнер не выйдет за границы экрана */
+    height: 48px;
+    border-radius: 100px;
+    background: #ffffff;
+    border: 2px solid #ddd;
+    box-shadow: inset 4px 4px 9px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Кнопка начнёт с левого края */
+    padding: 0 10px;
+	white-space: nowrap;
+    overflow: hidden; /* Предотвращаем выход кнопки за пределы */
+}
+
+.toggle-checkbox {
+    display: none;
+}
+       /* Кнопка-переключатель */
+.toggle-button {
+    position: absolute;
+    width: 50%; /* Сделаем размер кнопки пропорциональным */
+    height: 32px;
+    border-radius: 16px;
+    background: linear-gradient(to bottom, #2c2c7a, #0c0c3c);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    justify-content: center;
+    transition: all 0.3s ease;
+    left: 8px; /* Начальная позиция */
+}
+
+
+
+/* Состояние "чётная неделя" */
+.toggle-checkbox:checked + .toggle-button {
+    left: auto;
+    right: 8px; /* Вместо фиксированного left двигаем вправо */
+    background: linear-gradient(to bottom, #1c5c1c, #0c3c0c);
+}
+
+/* Текст внутри кнопки */
+.toggle-button::after {
+    content: "нечётная неделя";
+}
+
+.toggle-checkbox:checked + .toggle-button::after {
+    content: "чётная неделя";
+}
+
+.time_style {
+        color: #757575; 
+        font-size: 10px;
+  		font-weight: 400; 
+        margin-top:-2px;
+    }
+
+    .name_urok {
+        color: #202020;
+  		font-size: 12px;
+  		font-weight: 500; margin: 0;
+    }
+
+    .name_urok_large {
+        color: #202020;
+  		font-size: 10px;
+  		font-weight: 500; margin: 0;
+    }
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="welcome">добро<br> <span style="font-weight: 487;"> пожаловать </span> <br> <span style="font-weight: 600;"> сюда </span> </h1>
+        
+<div>
+
+    <div class="toggle-wrapper">
+        <label class="toggle-container">
+            <input type="checkbox" class="toggle-checkbox" id="toggleCheckbox">
+            <div class="toggle-button"></div>
+        </label>
+    </div>
+        </div>
+
+       
+        
+        <div class="schedule">
+<div id="day1">
+
+
+
+            <div class="day">
+                <h2 class="title_day">понедельник <br> <span style="color: black; font-weight: 400; font-size: 20px">- день бездельник</span ></h2>
+                <div class="numbers">
+					<div class="urok" style="display: flex;">
+                    	<span class="circle">1</span> 
+							<div style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok"> xxxxxx </p>
+								<p class="time_style"> 8:00 - 9:35 </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle">2</span> 
+							<div style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok"> xxxxxx </p>
+								<p class="time_style"> 9:45 - 11:20 </p>
+							</div>
+					</div>
+                    <div class="urok" style="display: flex;">
+                    	<span class="circle">3</span> 
+							<div onclick="showPopup('popup2')" style="text-align: left; padding-left: 10px;  visibility: hidden;">
+								<p class="name_urok"> xxxxxx </p>
+								<p class="time_style"> 11:35 - 13:10 <span style="color: navy;"> &nbsp;&nbsp;6455 </span> </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle">4</span> 
+							<div onclick="showPopup('popup1')" style="text-align: left; padding-left: 10px;">
+								<p class="name_urok"> Моделирование архитектурных объектов </p>
+								<p class="time_style"> 13:40 - 15:15 <span style="color: navy;"> &nbsp;&nbsp;6455 </span> </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle">5</span> 
+							<div onclick="showPopup('popup2')" style="text-align: left; padding-left: 10px;  visibility: hidden;">
+								<p class="name_urok">  xxxxxx </p>
+								<p class="time_style"> 15:25 - 17:00 <span style="color: navy;"> &nbsp;&nbsp;6449 </span>  </p>
+							</div>
+					</div>
+                </div>
+            </div>
+            
+            
+            <div class="day">
+                <h2 class="title_day">вторник <br> <span style="color: black; font-weight: 400; font-size: 20px">- повторник</span ></h2>
+                <div class="numbers">
+					<div class="urok" style="display: flex;">
+                    	<span class="circle">1</span> 
+							<div style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok"> xxxxxx </p>
+								<p class="time_style"> 8:00 - 9:35 </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle">2</span> 
+							<div onclick="showPopup('popup2')" style="text-align: left; padding-left: 10px;">
+								<p class="name_urok"> Разработка мобильных приложений (лабы) </p>
+								<p class="time_style"> 9:45 - 11:20 <span style="color: navy;"> &nbsp;&nbsp;6451 </span>  </p>
+							</div>
+					</div>
+                    <div class="urok" style="display: flex;">
+                    	<span class="circle">3</span> 
+							<div onclick="showPopup('popup3')" style="text-align: left; padding-left: 10px;">
+								<p class="name_urok"> Геоинформационные системы (лабы) </p>
+								<p class="time_style"> 11:35 - 13:10 <span style="color: navy;"> &nbsp;&nbsp;6452 </span>  </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle">4</span> 
+							<div onclick="showPopup('popup1')" style="text-align: left; padding-left: 10px;">
+								<p class="name_urok"> Визуализация объектов </p>
+								<p class="time_style"> 13:40 - 15:15 <span style="color: navy;"> &nbsp;&nbsp;6455 </span>  </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle">5</span> 
+							<div onclick="showPopup('popup1')" style="text-align: left; padding-left: 10px;">
+								<p class="name_urok"> Визуализация объектов (лабы) </p>
+								<p class="time_style"> 15:25 - 17:00 <span style="color: navy;"> &nbsp;&nbsp;6449 </span>  </p>
+							</div>
+					</div>
+                </div>
+            </div>
+            
+           
+            
+            <div class="day">
+                <h2 class="title_day">среда <br> <span style="color: black; font-weight: 400; font-size: 20px">- тамада</span ></h2>
+                <div class="numbers">
+					<div class="urok" style="display: flex;">
+                    	<span class="circle">1</span> 
+							<div onclick="showPopup('popup4')" style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok"> Управление данными (лабы) </p>
+								<p class="time_style"> 7:30 - 9:05 <span style="color: navy;"> &nbsp;&nbsp;4405 </span>  </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle">2</span> 
+							<div onclick="showPopup('popup4')" style="text-align: left; padding-left: 10px; visibility: hidden;  ">
+								<p class="name_urok"> Управление данными (лабы) </p>
+								<p class="time_style"> 9:20 - 10:55 <span style="color: navy;"> &nbsp;&nbsp;4405 </span> </p>
+							</div>
+					</div>
+                     <div class="urok" style="display: flex;">
+                    	<span class="circle">3</span> 
+							<div onclick="showPopup('popup2')" style="text-align: left; padding-left: 10px;">
+								<p class="name_urok"> Разработка мобильных приложений </p>
+								<p class="time_style"> 11:35 - 13:10 <span style="color: navy;"> &nbsp;&nbsp;6455 </span>  </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle">4</span> 
+							<div onclick="showPopup('popup4')" style="text-align: left; padding-left: 10px;">
+								<p class="name_urok"> Проектирование информационных ресурсов </p>
+								<p class="time_style"> 13:40 - 15:15 <span style="color: navy;"> &nbsp;&nbsp;6455 </span>  </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle">5</span> 
+							<div onclick="showPopup('popup5')" style="text-align: left; padding-left: 10px;">
+								<p class="name_urok"> Организация стартапов в инф технологиях (3,7,11,15) </p>
+								<p class="time_style"> 15:25 - 17:00 <span style="color: navy;"> &nbsp;&nbsp;6251 </span>  </p>
+							</div>
+					</div>
+                </div>
+            </div>
+            
+            <div class="day">
+                <h2 class="title_day">четверг <br> <span style="color: black; font-weight: 400; font-size: 20px">- все заботы я отверг</span ></h2>
+                <div class="numbers">
+					<div class="urok" style="display: flex;">
+                    	<span class="circle">1</span> 
+							<div onclick="showPopup('popup4')" style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok"> Управление данными </p>
+								<p class="time_style"> 8:00 - 9:35 <span style="color: navy;"> &nbsp;&nbsp;6246 </span> </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle">2</span> 
+							<div onclick="showPopup('popup5')" style="text-align: left; padding-left: 10px;">
+								<p class="name_urok"> Организация стартапов в инф технологиях </p>
+								<p class="time_style"> 9:45 - 11:20 <span style="color: navy;"> &nbsp;&nbsp;6510 </span> </p>
+							</div>
+					</div>
+                    <div class="urok" style="display: flex;">
+                    	<span class="circle">3</span> 
+							<div onclick="showPopup('popup6')" style="text-align: left; padding-left: 10px;">
+								<p class="name_urok"> Методы искусственного интеллекта (лабы) </p>
+								<p class="time_style"> 11:35 - 13:10 <span style="color: navy;"> &nbsp;&nbsp;6512 </span>  </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle">4</span> 
+							<div onclick="showPopup('popup6')" style="text-align: left; padding-left: 10px;">
+								<p class="name_urok"> Методы искусственного интеллекта (лабы) </p>
+								<p class="time_style"> 13:40 - 15:15 <span style="color: navy;"> &nbsp;&nbsp;6455 </span>  </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle">5</span> 
+							<div style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok"> xxxxxx </p>
+								<p class="time_style"> 8:00 - 9:35 </p>
+							</div>
+					</div>
+                </div>
+            </div>
+            
+            <div class="day">
+                <h2 class="title_day">пятница <br> <span style="color: black; font-weight: 400; font-size: 20px">- пьяница</span ></h2>
+                <div class="numbers">
+					<div class="urok" style="display: flex;">
+                    	<span class="circle">1</span> 
+							<div style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok"> xxxxxx </p>
+								<p class="time_style"> 7:30 - 9:05 </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle">2</span> 
+							<div style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok"> xxxxxx </p>
+								<p class="time_style"> 9:20 - 10:55 <span style="color: navy;"> &nbsp;&nbsp;4311 </span> </p>
+							</div>
+					</div>
+                    <div class="urok" style="display: flex;">
+                    	<span class="circle">3</span> 
+							<div onclick="showPopup('popup7')" onclick="showPopup('popup7')" style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok"> Моделирование систем </p>
+								<p class="time_style"> 11:10 - 12:45 <span style="color: navy;"> &nbsp;&nbsp;4201 </span> </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle">4</span> 
+							<div onclick="showPopup('popup7')" onclick="showPopup('popup7')" style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok"> Моделирование систем (лабы 5,9,13,17) </p>
+								<p class="time_style"> 13:15 - 14:50 <span style="color: navy;"> &nbsp;&nbsp;4311 </span> </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle">5</span> 
+							<div onclick="showPopup('popup7')" style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok"> Моделирование систем (лабы 5,9,13,17) </p>
+								<p class="time_style"> 15:00 - 16:35 <span style="color: navy;"> &nbsp;&nbsp;4311 </span> </p>
+							</div>
+					</div>
+                </div>
+            </div>
+            
+            <div class="day">
+                <h2 class="title_day">суббота <br> <span style="color: black; font-weight: 400; font-size: 20px">- не работа</span ></h2>
+                <div class="numbers">
+
+                   <div class="urok" style="display: flex;">
+                    	<span class="circle">1</span> 
+							<div onclick="showPopup('popup4')" style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok"> Управление данными (лабы) </p>
+								<p class="time_style"> 7:30 - 9:05 <span style="color: navy;"> &nbsp;&nbsp;4405 </span>  </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle">2</span> 
+							<div onclick="showPopup('popup4')" style="text-align: left; padding-left: 10px; visibility: hidden;  ">
+								<p class="name_urok"> Управление данными (лабы) </p>
+								<p class="time_style"> 9:20 - 10:55 <span style="color: navy;"> &nbsp;&nbsp;4405 </span> </p>
+							</div>
+					</div>
+                     <div class="urok" style="display: flex;">
+                    	<span class="circle">3</span> 
+							<div onclick="showPopup('popup7')" style="text-align: left; padding-left: 10px;">
+								<p class="name_urok"> Разработка API-приложений </p>
+								<p class="time_style"> 11:35 - 13:10 <span style="color: navy;"> &nbsp;&nbsp;6455 </span>  </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle">4</span> 
+							<div onclick="showPopup('popup3')" style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok"> Проектирование информационных ресурсов </p>
+								<p class="time_style"> 13:40 - 15:15 <span style="color: navy;"> &nbsp;&nbsp;6455 </span>  </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle">5</span> 
+							<div onclick="showPopup('popup7')" style="text-align: left; padding-left: 10px;">
+								<p class="name_urok"> Разработка API-приложений (лабы) </p>
+								<p class="time_style"> 15:25 - 17:00 <span style="color: navy;"> &nbsp;&nbsp;6449 </span>  </p>
+							</div>
+					</div>
+            </div>
+</div>
+</div>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+<div id="day2">
+            
+            <div class="day">
+                <h2 class="title_day">понедельник <br> <span style="color: black; font-weight: 400; font-size: 20px">- день бездельник</span ></h2>
+                <div class="numbers">
+					<div class="urok" style="display: flex;">
+                    	<span class="circle2">1</span> 
+							<div onclick="showPopup('popup1')" style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok_large"> Инструментальные средства информационных систем в дизайне (лабы) </p>
+								<p class="time_style"> 8:00 - 9:35 <span style="color: #0c3c0c;"> &nbsp;&nbsp;6452 </span>  </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle2">2</span> 
+							<div onclick="showPopup('popup1')" style="text-align: left; padding-left: 10px;">
+								<p class="name_urok"> Моделирование архитектурных объектов (лабы) </p>
+								<p class="time_style"> 9:45 - 11:20 <span style="color: #0c3c0c;"> &nbsp;&nbsp;6449 </span> </p>
+							</div>
+					</div>
+                    <div class="urok" style="display: flex;">
+                    	<span class="circle2">3</span> 
+							<div onclick="showPopup('popup1')" style="text-align: left; padding-left: 10px;">
+								<p class="name_urok"> Моделирование архитектурных объектов (лабы) </p>
+								<p class="time_style"> 11:35 - 13:10 <span style="color: #0c3c0c;"> &nbsp;&nbsp;6449 </span> </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle2">4</span> 
+							<div onclick="showPopup('popup1')" style="text-align: left; padding-left: 10px;">
+								<p class="name_urok"> Моделирование архитектурных объектов </p>
+								<p class="time_style"> 13:40 - 15:15 <span style="color: #0c3c0c;"> &nbsp;&nbsp;6455 </span> </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle2">5</span> 
+							<div onclick="showPopup('popup4')" style="text-align: left; padding-left: 10px;">
+								<p class="name_urok"> Проектирование информационных ресурсов (лабы) </p>
+								<p class="time_style"> 15:25 - 17:00 <span style="color: #0c3c0c;"> &nbsp;&nbsp;6451 </span> </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle2">6</span> 
+							<div onclick="showPopup('popup4')" style="text-align: left; padding-left: 10px;">
+								<p class="name_urok"> Проектирование информационных ресурсов (лабы) </p>
+								<p class="time_style"> 17:10 - 18:45 <span style="color: #0c3c0c;"> &nbsp;&nbsp;6451 </span> </p>
+							</div>
+					</div>
+                </div>
+            </div>
+            
+            
+            <div class="day">
+                <h2 class="title_day">вторник <br> <span style="color: black; font-weight: 400; font-size: 20px">- повторник</span ></h2>
+                <div class="numbers">
+					<div class="urok" style="display: flex;">
+                    	<span class="circle2">1</span> 
+							<div onclick="showPopup('popup1')" style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok"> Инструментальные средства информационных систем в дизайне (лабы) </p>
+								<p class="time_style"> 8:00 - 9:35 <span style="color: #0c3c0c;"> &nbsp;&nbsp;6452 </span>  </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle2">2</span> 
+							<div onclick="showPopup('popup2')" style="text-align: left; padding-left: 10px;">
+								<p class="name_urok"> Разработка мобильных приложений (лабы) </p>
+								<p class="time_style"> 9:45 - 11:20 <span style="color: #0c3c0c;"> &nbsp;&nbsp;6451 </span> </p>
+							</div>
+					</div>
+                    <div class="urok" style="display: flex;">
+                    	<span class="circle2">3</span> 
+							<div onclick="showPopup('popup3')" style="text-align: left; padding-left: 10px;">
+								<p class="name_urok"> Геоинформационные системы (лабы) </p>
+								<p class="time_style"> 11:35 - 13:10 <span style="color: #0c3c0c;"> &nbsp;&nbsp;6452 </span> </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle2">4</span> 
+							<div onclick="showPopup('popup3')" style="text-align: left; padding-left: 10px;">
+								<p class="name_urok"> Геоинформационные системы </p>
+								<p class="time_style"> 13:40 - 15:15 <span style="color: #0c3c0c;"> &nbsp;&nbsp;6455 </span> </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle2">5</span> 
+							<div onclick="showPopup('popup1')" style="text-align: left; padding-left: 10px;">
+								<p class="name_urok"> Визуализация объектов (лабы) </p>
+								<p class="time_style"> 15:25 - 17:00 <span style="color: #0c3c0c;"> &nbsp;&nbsp;6449 </span> </p>
+							</div>
+					</div>
+                </div>
+            </div>
+            
+           
+            
+            <div class="day">
+                <h2 class="title_day">среда <br> <span style="color: black; font-weight: 400; font-size: 20px">- тамада</span ></h2>
+                <div class="numbers">
+					<div class="urok" style="display: flex;">
+                    	<span class="circle2">1</span> 
+							<div style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok"> xxxxxx </p>
+								<p class="time_style"> 8:00 - 9:35 </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle2">2</span> 
+							<div style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok"> xxxxxx </p>
+								<p class="time_style"> 8:00 - 9:35 </p>
+							</div>
+					</div>
+                      <div class="urok" style="display: flex;">
+                    	<span class="circle2">3</span> 
+							<div onclick="showPopup('popup2')" style="text-align: left; padding-left: 10px;">
+								<p class="name_urok"> Разработка мобильных приложений </p>
+								<p class="time_style"> 11:35 - 13:10 <span style="color: #0c3c0c;"> &nbsp;&nbsp;6455 </span> </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle2">4</span> 
+							<div onclick="showPopup('popup4')" style="text-align: left; padding-left: 10px;">
+								<p class="name_urok"> Проектирование информационных ресурсов </p>
+								<p class="time_style"> 13:40 - 15:15 <span style="color: #0c3c0c;"> &nbsp;&nbsp;6455 </span> </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle2">5</span> 
+							<div style="text-align: left; padding-left: 10px; visibility: hidden">
+								<p class="name_urok"> xxxxxx </p>
+								<p class="time_style"> 8:00 - 9:35 </p>
+							</div>
+					</div>
+                </div>
+            </div>
+            
+            <div class="day">
+                <h2 class="title_day">четверг <br> <span style="color: black; font-weight: 400; font-size: 20px">- все заботы я отверг</span ></h2>
+                <div class="numbers">
+					<div class="urok" style="display: flex;">
+                    	<span class="circle2">1</span> 
+							<div onclick="showPopup('popup4')" style="text-align: left; padding-left: 10px;visibility: hidden;">
+								<p class="name_urok"> Управление данными </p>
+								<p class="time_style"> 8:00 - 9:35 <span style="color: #0c3c0c;"> &nbsp;&nbsp;6246 </span> </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle2">2</span> 
+							<div onclick="showPopup('popup5')" style="text-align: left; padding-left: 10px;">
+								<p class="name_urok"> Организация стартапов в инф технологиях </p>
+								<p class="time_style"> 9:45 - 11:20 <span style="color: #0c3c0c;"> &nbsp;&nbsp;6510 </span> </p>
+							</div>
+					</div>
+                    <div class="urok" style="display: flex;">
+                    	<span class="circle2">3</span> 
+							<div onclick="showPopup('popup6')" style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok"> Правоведение (практика) </p>
+								<p class="time_style"> 11:35 - 13:10 <span style="color: #0c3c0c;"> &nbsp;&nbsp;6305 </span> </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle2">4</span> 
+							<div onclick="showPopup('popup6')" style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok"> Правоведение </p>
+								<p class="time_style"> 13:40 - 15:15  <span style="color: #0c3c0c;"> &nbsp;&nbsp;6125 </span> </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle2">5</span> 
+							<div style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok"> xxxxxx </p>
+								<p class="time_style"> 8:00 - 9:35 </p>
+							</div>
+					</div>
+                </div>
+            </div>
+            
+            <div class="day">
+                <h2 class="title_day">пятница <br> <span style="color: black; font-weight: 400; font-size: 20px">- пьяница</span ></h2>
+                <div class="numbers">
+					<div class="urok" style="display: flex;">
+                    	<span class="circle2">1</span> 
+							<div style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok"> xxxxxx </p>
+								<p class="time_style"> 8:00 - 9:35 </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle2">2</span> 
+							<div onclick="showPopup('popup7')" style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok"> Моделирование систем (практика) </p>
+								<p class="time_style"> 9:20 - 10:55 <span style="color: #0c3c0c;"> &nbsp;&nbsp;4311 </span> </p>
+							</div>
+					</div>
+                    <div class="urok" style="display: flex;">
+                    	<span class="circle2">3</span> 
+							<div onclick="showPopup('popup7')" style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok"> Моделирование систем </p>
+								<p class="time_style"> 11:10 - 12:45 <span style="color: #0c3c0c;"> &nbsp;&nbsp;4201 </span> </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle2">4</span> 
+							<div style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok"> xxxxxx </p>
+								<p class="time_style"> 8:00 - 9:35 </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle2">5</span> 
+							<div style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok"> xxxxxx </p>
+								<p class="time_style"> 8:00 - 9:35 </p>
+							</div>
+					</div>
+                </div>
+            </div>
+            
+            <div class="day">
+                <h2 class="title_day">суббота <br> <span style="color: black; font-weight: 400; font-size: 20px">- не работа</span ></h2>
+                <div class="numbers">
+					<div class="urok" style="display: flex;">
+                    	<span class="circle2">1</span> 
+							<div style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok"> xxxxxx </p>
+								<p class="time_style"> 8:00 - 9:35 </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle2">2</span> 
+							<div onclick="showPopup('popup7')" style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok"> Моделирование систем (практика) </p>
+								<p class="time_style"> 9:20 - 10:55 <span style="color: #0c3c0c;"> &nbsp;&nbsp;4311 </span> </p>
+							</div>
+					</div>
+                    <div class="urok" style="display: flex;">
+                    	<span class="circle2">3</span> 
+							<div onclick="showPopup('popup7')" style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok"> Моделирование систем </p>
+								<p class="time_style"> 11:10 - 12:45 <span style="color: #0c3c0c;"> &nbsp;&nbsp;4201 </span> </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle2">4</span> 
+							<div style="text-align: left; padding-left: 10px; visibility: hidden;">
+								<p class="name_urok"> xxxxxx </p>
+								<p class="time_style"> 8:00 - 9:35 </p>
+							</div>
+					</div>
+					<div class="urok" style="display: flex;">
+                    	<span class="circle2">5</span> 
+							<div onclick="showPopup('popup7')" style="text-align: left; padding-left: 10px;">
+								<p class="name_urok"> Разработка API-приложений (лабы) </p>
+								<p class="time_style"> 15:25 - 17:00 <span style="color: #0c3c0c;"> &nbsp;&nbsp;6449 </span> </p>
+							</div>
+					</div>
+                </div>
+            </div>
+
+</div>
+                
+ <h2 class="sunday"> воскресенье <br> <span class="sunday1">- день веселья</span ></h2>
+ <img style="margin: -15px 0 0 0;" src="https://github.com/shattova/schedule/blob/main/image%209.png?raw=true" alt="Каневский">
+               
+
+
+    <div id="popup1" class="popup">
+    	<h5 class="name"> Соснина Ольга <br> Анатольевна </h5>
+    </div>
+
+    <div id="popup2" class="popup">
+    	<h5 class="name"> Халеева Ульяна  <br> Игоревна </h5>
+    </div>
+
+    <div id="popup3" class="popup">
+    	<h5 class="name"> Томчинская Татьяна  <br> Николаевна </h5>
+    </div>
+
+    <div id="popup4" class="popup">
+    	<h5 class="name"> Глумова Екатерина   <br> Сергеевна </h5>
+    </div>
+
+    <div id="popup5" class="popup">
+    	<h5 class="name"> Колесов Кирилл <br> Игоревич </h5>
+    </div>
+
+    <div id="popup6" class="popup">
+    	<h5 class="name">Егоров Юрий  <br> Сергеевич </h5>
+    </div>
+
+    <div id="popup7" class="popup">
+    	<h5 class="name"> Серов Илья  <br> Игоревич </h5>
+    </div>
+
+
+
+
+
+    </div>
+    
+    <script>
+/*		const toggleCheckbox = document.getElementById('toggleCheckbox');
+const content1 = document.getElementById('day1');
+const content2 = document.getElementById('day2');
+
+// Слушаем изменения состояния чекбокса
+toggleCheckbox.addEventListener('change', function() {
+    if (this.checked) {
+        // Показываем четную неделю, скрываем нечетную
+        content1.classList.add('hidden');
+        content2.classList.remove('hidden');
+    } else {
+        // Показываем нечетную неделю, скрываем четную
+        content1.classList.remove('hidden');
+        content2.classList.add('hidden');
+    }
+});*/
+
+document.getElementById("toggleCheckbox").addEventListener("change", function() {
+    var day1 = document.getElementById("day1");
+    var day2 = document.getElementById("day2");
+    
+    if (this.checked) {
+        day1.style.display = "none";
+        day2.style.display = "block";
+    } else {
+        day1.style.display = "block";
+        day2.style.display = "none";
+    }
+});
+
+
+
+   let timeout; // ← объявляем один раз, до функций
+
+
+function showPopup(popupId) {
+    clearTimeout(timeout); // Сброс предыдущего таймера
+
+    // Скрываем все плашки
+    document.querySelectorAll('.popup').forEach(popup => {
+        popup.style.display = "none";
+    });
+
+    // Показываем нужную плашку
+    let popup = document.getElementById(popupId);
+    popup.style.display = "flex";
+
+    // Запускаем таймер на скрытие через 2 секунды
+    timeout = setTimeout(() => {
+        popup.style.display = "none";
+    }, 2000);
+}
+
+
+
+    </script>
+</div>
+</body>
+</html>
