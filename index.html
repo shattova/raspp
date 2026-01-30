@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Расписание</title>
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap" rel="stylesheet">
+
     <style>
         body {
             font-family: 'Montserrat', sans-serif;
@@ -15,681 +17,205 @@
             margin: 0;
             padding: 20px;
         }
+
         .container {
             max-width: 440px;
             margin: auto;
             background: white;
             padding: 20px 20px 0 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            font-size: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,.1);
         }
 
-		.title_day {
-              margin: 15px 0 15px 25px;
-              height: 46px;
-              font-family: Montserrat;
-              font-size: 25px;
-              font-weight: 700;
-              line-height: 23px;
-			text-align: left;
-		}
-		
-        .odd-week {
-            background: navy;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            margin-bottom: 20px;
+        .title_day {
+            margin: 15px 0 15px 25px;
+            font-size: 25px;
+            font-weight: 700;
+            text-align: left;
         }
-        .even-week {
-            background: green;
-        }
-        .schedule .day, .schedule .day1{
-            background: white;
+
+        .schedule .day {
             padding: 9px;
-            margin: 10px 0 30px 0;
+            margin: 10px 0 30px;
             border-radius: 40px;
-  background: linear-gradient(134deg, #ededed 0%, #ffffff 100%);
-  background-blend-mode: normal;
-  box-shadow: -26px -26px 50px rgba(255,255,255,0.9),
-              -26px 26px 50px rgba(216,216,216,0.2),
-              26px -26px 50px rgba(216,216,216,0.2),
-              26px 26px 50px rgba(216,216,216,0.9),
-              inset -1px -1px 2px rgba(216,216,216,0.5),
-              inset 1px 1px 2px rgba(255,255,255,0.3);
+            background: linear-gradient(134deg,#ededed 0%,#ffffff 100%);
+            box-shadow:
+                -26px -26px 50px rgba(255,255,255,0.9),
+                -26px 26px 50px rgba(216,216,216,0.2),
+                26px -26px 50px rgba(216,216,216,0.2),
+                26px 26px 50px rgba(216,216,216,0.9);
         }
 
-		#day1.hidden,
-#day2.hidden {
-    display: none;
-}
-
-#day1{
-    display: block;
-}
-
-		#day2 {
-			display: none;
-		}
-
-		
-        .numbers {
-            margin-left: 5px;
-			
-        }
         .circle {
             width: 20px;
             height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             background: navy;
             color: white;
             border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 13px;
             font-weight: bold;
-            flex-shrink: 0;
         }
 
-	.circle11 {
-            width: 60px;
+        .circle2 {
+            width: 20px;
             height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: navy;
-            color: white;
-            border-radius: 50px;
-            font-size: 13px;
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-	    
-	.circle2 {
-	    width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             background: #1B5112;
             color: white;
             border-radius: 50%;
-            font-size: 13px;
-            font-weight: bold;
-            flex-shrink: 0;
-	}
-
-	.circle22 {
-	    width: 60px;
-            height: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #1B5112;
-            color: white;
-            border-radius: 50px;
             font-size: 13px;
             font-weight: bold;
-            flex-shrink: 0;
-	}
-
-    .name {
-        color: white;
-        font-size: 18px;
-        font-weight: 300;
-    }
-        
-        .popup {
-        	position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #0D0125;
-            border-radius: 18px;
-			display: none;
-            width: 320px;
-            height: 67px;
-  			align-items: center;
-    		justify-content: center;
-    		text-align: center;
         }
 
-    .welcome {
-        font-family: Montserrat;
-        font-size: 40px;
-        font-weight: 400;
-        line-height: 58px;
-        text-align: center;
-        color: black;
-    }
-
-    .sunday {
-        font-size: 45px;
-        line-height: 38px;
-
-        margin: 15px 0 15px 25px;
-        height: 46px;
-        font-family: Montserrat;
-        font-weight: 700;
-		text-align: left;
-    }
-
-    .sunday1 {
-        color: black; 
-        font-weight: 400;
-        font-size: 35px;
-
-        margin: 15px 0 15px 25px;
-        height: 46px;
-        font-family: Montserrat;
-		text-align: left;
-    }
-
-	@media (max-width: 391px) {
-		.welcome {
-			font-size: 45px;
-            line-height: 48px;	
-		}
-
-		.sunday {
-			font-size: 35px;
-            line-height: 28px;
-		}
-
-        .sunday1 {
-            font-size: 30px;
+        .urok {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
         }
 
-        .toggle-button {
+        .empty-urok {
+            height: 38px;
+            margin-bottom: 10px;
+            opacity: .25;
+        }
+
+        .time_style {
+            color: #757575;
             font-size: 10px;
+            margin-top: -2px;
         }
 
-        /* Текст внутри кнопки */
-        .toggle-button::after {
-            content: "нечётная неделя";
+        .name_urok {
+            font-size: 12px;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .remove-btn {
+            margin-left: auto;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .add-btn {
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 12px;
+            border-radius: 14px;
+            border: none;
+            background: #0D0125;
+            color: #fff;
             font-size: 14px;
+            cursor: pointer;
         }
 
-        .toggle-checkbox:checked + .toggle-button::after {
-            content: "чётная неделя";
-            font-size: 14px;
+        .form {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.4);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
         }
 
-        p {
-            font-size: 13px;
+        .form-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 20px;
+            width: 300px;
         }
-		
-	}
 
+        .form-box input,
+        .form-box select {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
 
-/* Подложка */
+        .auth {
+            position: fixed;
+            inset: 0;
+            background: rgba(245,245,245,.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+        }
 
-.toggle-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 20px;
-    width: 100%; /* Растягиваем по ширине контейнера */
-}
+        .auth-box {
+            width: 320px;
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.15);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
 
-.toggle-container {
-    position: relative;
-    width: 366px;
-    max-width: 100%; /* Теперь контейнер не выйдет за границы экрана */
-    height: 48px;
-    border-radius: 100px;
-    background: #ffffff;
-    border: 2px solid #ddd;
-    box-shadow: inset 4px 4px 9px rgba(0, 0, 0, 0.25);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start; /* Кнопка начнёт с левого края */
-    padding: 0 10px;
-	white-space: nowrap;
-    overflow: hidden; /* Предотвращаем выход кнопки за пределы */
-}
+        .auth-box button {
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(#2c2c7a,#0c0c3c);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
-.toggle-checkbox {
-    display: none;
-}
-       /* Кнопка-переключатель */
-.toggle-button {
-    position: absolute;
-    width: 50%; /* Сделаем размер кнопки пропорциональным */
-    height: 32px;
-    border-radius: 16px;
-    background: linear-gradient(to bottom, #2c2c7a, #0c0c3c);
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    padding: 0 10px;
-    justify-content: center;
-    transition: all 0.3s ease;
-    left: 8px; /* Начальная позиция */
-}
-
-
-
-/* Состояние "чётная неделя" */
-.toggle-checkbox:checked + .toggle-button {
-    left: auto;
-    right: 8px; /* Вместо фиксированного left двигаем вправо */
-    background: linear-gradient(to bottom, #1c5c1c, #0c3c0c);
-}
-
-/* Текст внутри кнопки */
-.toggle-button::after {
-    content: "нечётная неделя";
-}
-
-.toggle-checkbox:checked + .toggle-button::after {
-    content: "чётная неделя";
-}
-
-.time_style {
-        color: #757575; 
-        font-size: 10px;
-  		font-weight: 400; 
-        margin-top:-2px;
-    }
-
-    .name_urok {
-        color: #202020;
-  		font-size: 12px;
-  		font-weight: 500; margin: 0;
-    }
-
-    .name_urok_large {
-        color: #202020;
-  		font-size: 10px;
-  		font-weight: 500; margin: 0;
-    }
-
-
-    .add-btn {
-    width: 100%;
-    margin-bottom: 20px;
-    padding: 12px;
-    border-radius: 14px;
-    border: none;
-    background: #0D0125;
-    color: #fff;
-    font-family: 'Montserrat';
-    font-size: 14px;
-    cursor: pointer;
-}
-
-.remove-btn {
-    margin-left: auto;
-    font-size: 12px;
-    color: #999;
-    cursor: pointer;
-}
-
-.form {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.4);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 2000;
-}
-
-.form-box {
-    background: #fff;
-    padding: 20px;
-    border-radius: 20px;
-    width: 300px;
-}
-
-.form-box input, .form-box select {
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 8px;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-    font-family: Montserrat;
-}
-
-    .empty-urok {
-    height: 38px;
-    margin-bottom: 10px;
-    opacity: 0.25;
-    }
-
-    .auth {
-    position: fixed;
-    inset: 0;
-    background: rgba(245,245,245,0.95);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2000;
-}
-
-.auth-box {
-    width: 320px;
-    background: white;
-    padding: 25px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    text-align: center;
-}
-
-
-.auth-box h2 {
-    margin-bottom: 10px;
-}
-
-.auth-box input {
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-    font-family: inherit;
-}
-
-.auth-box button {
-    padding: 10px;
-    border-radius: 10px;
-    border: none;
-    background: linear-gradient(#2c2c7a, #0c0c3c);
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.auth-box button.secondary {
-    background: #eaeaea;
-    color: #333;
-}
-
-#auth-status {
-    font-size: 12px;
-    color: #555;
-}
-
-
+        .auth-box button.secondary {
+            background: #eaeaea;
+            color: #333;
+        }
     </style>
 </head>
+
 <body>
 
+<!-- AUTH -->
 <div class="auth" id="auth">
     <div class="auth-box">
         <h2>Вход / регистрация</h2>
-
         <input id="email" type="email" placeholder="Email">
         <input id="password" type="password" placeholder="Пароль">
-
         <button onclick="signIn()">Войти</button>
         <button class="secondary" onclick="signUp()">Зарегистрироваться</button>
-
         <p id="auth-status"></p>
     </div>
 </div>
 
+<!-- SCHEDULE -->
+<div class="container" id="schedule" style="display:none;">
+    <button class="add-btn" onclick="openAddForm()">＋ добавить пару</button>
 
-
-    <div class="container" id="schedule" style="display:none;">
-
-        <h1 class="welcome">Расписание<br> <span style="font-weight: 487;"> НГТУ </span> <br> <span style="font-weight: 600;"> им. Р.Е.Алексеева </span> </h1>
-        
-<div>
-
-    <div class="toggle-wrapper">
-        <label class="toggle-container">
-            <input type="checkbox" class="toggle-checkbox" id="toggleCheckbox">
-            <div class="toggle-button"></div>
-        </label>
-    </div>
-        </div>
-
-       <button class="add-btn" onclick="openAddForm()">＋ добавить пару</button>
-
-        
-        <div class="schedule">
-<div id="day1">
-
-    <div class="day" data-day="monday">
-        <div class="title_day">понедельник</div>
+    <div id="day1">
+        <div class="day" data-day="monday"><div class="title_day">понедельник</div></div>
+        <div class="day" data-day="tuesday"><div class="title_day">вторник</div></div>
+        <div class="day" data-day="wednesday"><div class="title_day">среда</div></div>
+        <div class="day" data-day="thursday"><div class="title_day">четверг</div></div>
+        <div class="day" data-day="friday"><div class="title_day">пятница</div></div>
     </div>
 
-    <div class="day" data-day="tuesday">
-        <div class="title_day">вторник</div>
+    <div id="day2" style="display:none;">
+        <div class="day" data-day="monday"><div class="title_day">понедельник</div></div>
+        <div class="day" data-day="tuesday"><div class="title_day">вторник</div></div>
+        <div class="day" data-day="wednesday"><div class="title_day">среда</div></div>
+        <div class="day" data-day="thursday"><div class="title_day">четверг</div></div>
+        <div class="day" data-day="friday"><div class="title_day">пятница</div></div>
     </div>
-
-    <div class="day" data-day="wednesday">
-        <div class="title_day">среда</div>
-    </div>
-
-    <div class="day" data-day="thursday">
-        <div class="title_day">четверг</div>
-    </div>
-
-    <div class="day" data-day="friday">
-        <div class="title_day">пятница</div>
-    </div>
-
 </div>
 
-            
-            
-            
-            
-            
-         
-            
-            
-<div id="day2" style="display: none;">
-
-    <div class="day" data-day="monday">
-        <div class="title_day">понедельник</div>
-    </div>
-
-    <div class="day" data-day="tuesday">
-        <div class="title_day">вторник</div>
-    </div>
-
-    <div class="day" data-day="wednesday">
-        <div class="title_day">среда</div>
-    </div>
-
-    <div class="day" data-day="thursday">
-        <div class="title_day">четверг</div>
-    </div>
-
-    <div class="day" data-day="friday">
-        <div class="title_day">пятница</div>
-    </div>
-
-</div>
-
-                
- <h2 class="sunday"> воскресенье <br> <span class="sunday1">- день веселья</span ></h2>
- <img style="margin: -15px 0 0 0;" src="https://github.com/shattova/schedule/blob/main/image%209.png?raw=true" alt="Каневский">
-               
-
-
-    <div id="popup1" class="popup">
-    	<h5 class="name"> Соснина Ольга <br> Анатольевна </h5>
-    </div>
-
-    <div id="popup2" class="popup">
-    	<h5 class="name"> Халеева Ульяна  <br> Игоревна </h5>
-    </div>
-
-    <div id="popup3" class="popup">
-    	<h5 class="name"> Томчинская Татьяна  <br> Николаевна </h5>
-    </div>
-
-    <div id="popup4" class="popup">
-    	<h5 class="name"> Глумова Екатерина   <br> Сергеевна </h5>
-    </div>
-
-    <div id="popup5" class="popup">
-    	<h5 class="name"> Колесов Кирилл <br> Игоревич </h5>
-    </div>
-
-    <div id="popup6" class="popup">
-    	<h5 class="name">Егоров Юрий  <br> Сергеевич </h5>
-    </div>
-
-    <div id="popup7" class="popup">
-    	<h5 class="name"> Серов Илья  <br> Игоревич </h5>
-    </div>
-
-
-
-
-
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-  const supabaseUrl = 'https://zncaxrvlcdkdhmhqrgdw.supabase.co'
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuY2F4cnZsY2RrZGhtaHFyZ2R3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk3MTY4NzQsImV4cCI6MjA4NTI5Mjg3NH0.lRaK11OarDsh-BMhxtMtAMq0I5H-OCoDpQTqlPL9uCA'
-  const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-</script>
-    <script>
-document.addEventListener('DOMContentLoaded', () => {
-
-    const toggle = document.getElementById('toggleCheckbox');
-    const day1 = document.getElementById('day1');
-    const day2 = document.getElementById('day2');
-    const form = document.getElementById('form');
-
-    const daySelect = document.getElementById('daySelect');
-    const weekType = document.getElementById('weekType');
-    const lessonType = document.getElementById('lessonType');
-    const lessonNumber = document.getElementById('lessonNumber');
-
-    const times = {
-        1: "8:00 – 9:35",
-        2: "9:45 – 11:25",
-        3: "11:35 – 13:10",
-        4: "13:40 – 15:15",
-        5: "15:25 – 17:00",
-        6: "17:10 – 18:45"
-    };
-
-    toggle.addEventListener('change', () => {
-        day1.style.display = toggle.checked ? 'none' : 'block';
-        day2.style.display = toggle.checked ? 'block' : 'none';
-    });
-
-    window.openAddForm = () => form.style.display = 'flex';
-
-    form.addEventListener('click', e => {
-        if (e.target === form) form.style.display = 'none';
-    });
-
-    window.addLesson = async function () {
-    const day = daySelect.value;
-    const week = weekType.value;
-    const type = lessonType.value;
-    const num = Number(lessonNumber.value);
-
-    const name = document.getElementById('name').value.trim();
-    const teacher = document.getElementById('teacher').value.trim();
-    const room = document.getElementById('room').value.trim();
-
-    if (!name || !room || !num) return;
-
-    const title = type ? `${name} (${type})` : name;
-
-    // Получаем текущего пользователя
-    const { data: { session } } = await supabase.auth.getSession();
-    const user = session?.user;
-    if (!user) {
-        alert('Вы не авторизованы');
-        return;
-    }
-
-    // Вставка в БД
-    const { error } = await supabase.from('schedule').insert({
-        user_id: user.id,
-        day,
-        week,
-        lesson_num: num,
-        title,
-        teacher,
-        room
-    });
-
-    if (error) {
-        console.error('Ошибка при добавлении пары:', error.message);
-        alert('Не удалось добавить пару. Проверьте консоль.');
-        return;
-    }
-
-    // Рендерим пару на странице
-    renderLesson({ day, week, lesson_num: num, title, teacher, room });
-
-    form.style.display = 'none';
-};
-
-
-    window.renderLesson = function (lesson) {
-
-        function createLesson(circleClass) {
-            const div = document.createElement('div');
-            div.className = 'urok';
-            div.dataset.num = lesson.lesson_num;
-            div.style.display = 'flex';
-
-            div.innerHTML = `
-                <span class="${circleClass}">${lesson.lesson_num}</span>
-                <div style="text-align:left; padding-left:10px;">
-                    <p class="name_urok">${lesson.title}</p>
-                    <p class="time_style">
-                        ${times[lesson.lesson_num]}
-                        <span style="color:#0c3c0c;">&nbsp;&nbsp;${lesson.room}</span>
-                    </p>
-                </div>
-                <div class="remove-btn" onclick="this.parentElement.remove(); rebuildDay(this.closest('.day'))">✕</div>
-            `;
-            return div;
-        }
-
-        function insert(dayRoot, circleClass) {
-            if (!dayRoot) return;
-            dayRoot.appendChild(createLesson(circleClass));
-            rebuildDay(dayRoot);
-        }
-
-        if (lesson.week === 'odd' || lesson.week === 'both') {
-            insert(
-                document.querySelector(`#day1 .day[data-day="${lesson.day}"]`),
-                'circle'
-            );
-        }
-
-        if (lesson.week === 'even' || lesson.week === 'both') {
-            insert(
-                document.querySelector(`#day2 .day[data-day="${lesson.day}"]`),
-                'circle2'
-            );
-        }
-    };
-});
-</script>
-
-
-
-
+<!-- FORM -->
 <div class="form" id="form">
     <div class="form-box">
-
         <select id="daySelect">
             <option value="monday">Понедельник</option>
             <option value="tuesday">Вторник</option>
@@ -699,15 +225,9 @@ document.addEventListener('DOMContentLoaded', () => {
         </select>
 
         <select id="weekType">
-            <option value="odd">Нечётная неделя</option>
-            <option value="even">Чётная неделя</option>
-            <option value="both">Обе недели</option>
-        </select>
-
-        <select id="lessonType">
-            <option value="">Лекция</option>
-            <option value="практика">Практика</option>
-            <option value="лабы">Лабы</option>
+            <option value="odd">Нечётная</option>
+            <option value="even">Чётная</option>
+            <option value="both">Обе</option>
         </select>
 
         <select id="lessonNumber">
@@ -719,121 +239,117 @@ document.addEventListener('DOMContentLoaded', () => {
             <option value="6">6 пара</option>
         </select>
 
-        <input placeholder="Название предмета" id="name">
-        <input placeholder="Преподаватель" id="teacher">
-        <input placeholder="Аудитория" id="room">
+        <input id="name" placeholder="Название">
+        <input id="teacher" placeholder="Преподаватель">
+        <input id="room" placeholder="Аудитория">
 
         <button class="add-btn" onclick="addLesson()">Добавить</button>
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-function rebuildDay(day) {
-    if (!day) return;
-
-    const lessons = Array.from(day.querySelectorAll('.urok'));
-    const title = day.querySelector('.title_day');
-
-    if (!lessons.length) return;
-
-    const map = {};
-    lessons.forEach(l => map[+l.dataset.num] = l);
-
-    const nums = lessons.map(l => +l.dataset.num);
-    const min = Math.min(...nums);
-    const max = Math.max(...nums);
-
-    day.innerHTML = '';
-    day.appendChild(title);
-
-    for (let i = min; i <= max; i++) {
-        if (map[i]) {
-            day.appendChild(map[i]);
-        } else {
-            const empty = document.createElement('div');
-            empty.className = 'empty-urok';
-            day.appendChild(empty);
-        }
-    }
-}
+const supabase = supabase.createClient(
+  'https://zncaxrvlcdkdhmhqrgdw.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuY2F4cnZsY2RrZGhtaHFyZ2R3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk3MTY4NzQsImV4cCI6MjA4NTI5Mjg3NH0.lRaK11OarDsh-BMhxtMtAMq0I5H-OCoDpQTqlPL9uCA'
+);
 </script>
 
-
 <script>
-  async function signUp() {
-    const emailVal = document.getElementById('email').value.trim();
-    const passwordVal = document.getElementById('password').value.trim();
+const times = {
+    1:"8:00–9:35",2:"9:45–11:25",3:"11:35–13:10",
+    4:"13:40–15:15",5:"15:25–17:00",6:"17:10–18:45"
+};
 
-    if (!emailVal || !passwordVal) {
-        document.getElementById('auth-status').innerText = 'Введите email и пароль';
-        return;
+function rebuildDay(day){
+    const lessons=[...day.querySelectorAll('.urok')];
+    const title=day.querySelector('.title_day');
+    if(!lessons.length)return;
+
+    const map={};
+    lessons.forEach(l=>map[l.dataset.num]=l);
+    const nums=lessons.map(l=>+l.dataset.num);
+    day.innerHTML='';
+    if(title)day.appendChild(title);
+
+    for(let i=Math.min(...nums);i<=Math.max(...nums);i++){
+        day.appendChild(map[i]||Object.assign(document.createElement('div'),{className:'empty-urok'}));
     }
-
-    const { error, data } = await supabase.auth.signUp({
-        email: emailVal,
-        password: passwordVal
-    });
-
-    document.getElementById('auth-status').innerText =
-        error ? error.message : 'Регистрация успешна! Теперь войдите';
 }
 
-  async function signIn() {
-    const emailVal = document.getElementById('email').value.trim();
-    const passwordVal = document.getElementById('password').value.trim();
+window.renderLesson=function(lesson){
+    const make=(cls)=>{
+        const d=document.createElement('div');
+        d.className='urok';
+        d.dataset.num=lesson.lesson_num;
+        d.innerHTML=`
+        <span class="${cls}">${lesson.lesson_num}</span>
+        <div style="padding-left:10px;text-align:left">
+            <p class="name_urok">${lesson.title}</p>
+            <p class="time_style">${times[lesson.lesson_num]} <span>${lesson.room}</span></p>
+        </div>
+        <div class="remove-btn" onclick="this.parentElement.remove();rebuildDay(this.closest('.day'))">✕</div>`;
+        return d;
+    };
 
-    if (!emailVal || !passwordVal) {
-        document.getElementById('auth-status').innerText = 'Введите email и пароль';
-        return;
+    if(lesson.week!=='even'){
+        const d=document.querySelector(`#day1 .day[data-day="${lesson.day}"]`);
+        d.appendChild(make('circle')); rebuildDay(d);
     }
-
-    const { error, data } = await supabase.auth.signInWithPassword({
-        email: emailVal,
-        password: passwordVal
-    });
-
-    if (error) {
-        document.getElementById('auth-status').innerText = error.message;
-        return;
+    if(lesson.week!=='odd'){
+        const d=document.querySelector(`#day2 .day[data-day="${lesson.day}"]`);
+        d.appendChild(make('circle2')); rebuildDay(d);
     }
+};
 
-    // Вход успешен — показываем расписание
-    document.getElementById('auth').style.display = 'none';
-    document.getElementById('schedule').style.display = 'block';
+async function addLesson(){
+    const user=(await supabase.auth.getUser()).data.user;
+    if(!user)return;
 
+    const lesson={
+        user_id:user.id,
+        day:daySelect.value,
+        week:weekType.value,
+        lesson_num:+lessonNumber.value,
+        title:name.value,
+        teacher:teacher.value,
+        room:room.value
+    };
+
+    await supabase.from('schedule').insert(lesson);
+    renderLesson(lesson);
+    document.getElementById('form').style.display='none';
+}
+
+async function loadSchedule(){
+    const user=(await supabase.auth.getUser()).data.user;
+    if(!user)return;
+
+    const {data}=await supabase.from('schedule').select('*').eq('user_id',user.id).order('lesson_num');
+    data.forEach(l=>renderLesson(l));
+}
+
+async function signUp(){
+    await supabase.auth.signUp({email:email.value,password:password.value});
+    auth-status.innerText='Зарегистрировано, войдите';
+}
+
+async function signIn(){
+    await supabase.auth.signInWithPassword({email:email.value,password:password.value});
+    auth.style.display='none';
+    schedule.style.display='block';
     loadSchedule();
 }
 
-  async function checkSession() {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (session?.user) {
-        document.getElementById('auth').style.display = 'none';
-        document.getElementById('schedule').style.display = 'block';
+(async()=>{
+    const {data:{session}}=await supabase.auth.getSession();
+    if(session){
+        auth.style.display='none';
+        schedule.style.display='block';
         loadSchedule();
     }
-}
-
-  async function loadSchedule() {
-    const user = (await supabase.auth.getUser()).data.user;
-    if (!user) return;
-
-    const { data, error } = await supabase
-        .from('schedule')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('lesson_num');
-
-    if (error) {
-        console.error(error);
-        return;
-    }
-
-    data.forEach(renderLesson);
-}
-
-  checkSession();
+})();
 </script>
-
 
 </body>
 </html>
