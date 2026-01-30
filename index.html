@@ -249,9 +249,12 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const supabase = supabase.createClient(
-  'https://zncaxrvlcdkdhmhqrgdw.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuY2F4cnZsY2RrZGhtaHFyZ2R3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk3MTY4NzQsImV4cCI6MjA4NTI5Mjg3NH0.lRaK11OarDsh-BMhxtMtAMq0I5H-OCoDpQTqlPL9uCA'
+    const SUPABASE_URL = 'https://zncaxrvlcdkdhmhqrgdw.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuY2F4cnZsY2RrZGhtaHFyZ2R3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk3MTY4NzQsImV4cCI6MjA4NTI5Mjg3NH0.lRaK11OarDsh-BMhxtMtAMq0I5H-OCoDpQTqlPL9uCA';
+
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
 );
 </script>
 
@@ -303,7 +306,7 @@ window.renderLesson=function(lesson){
 };
 
 async function addLesson(){
-    const user=(await supabase.auth.getUser()).data.user;
+    const user=(await supabaseClient.auth.getUser()).data.user;
     if(!user)return;
 
     const lesson={
@@ -322,10 +325,10 @@ async function addLesson(){
 }
 
 async function loadSchedule(){
-    const user=(await supabase.auth.getUser()).data.user;
+    const user=(await supabaseClient.auth.getUser()).data.user;
     if(!user)return;
 
-    const {data}=await supabase.from('schedule').select('*').eq('user_id',user.id).order('lesson_num');
+    const {data}=await supabaseClient.from('schedule').select('*').eq('user_id',user.id).order('lesson_num');
     data.forEach(l=>renderLesson(l));
 }
 
@@ -337,7 +340,7 @@ async function signUp() {
     const email = emailInput.value;
     const password = passwordInput.value;
 
-    const { error } = await supabase.auth.signUp({
+    const { error } = await supabaseClient.auth.signUp({
         email,
         password
     });
@@ -352,7 +355,7 @@ async function signIn() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { error } = await supabaseClient.auth.signInWithPassword({
         email,
         password
     });
@@ -368,7 +371,7 @@ async function signIn() {
 
 
 (async()=>{
-    const {data:{session}}=await supabase.auth.getSession();
+    const {data:{session}}=await supabaseClient.auth.getSession();
     if(session){
         auth.style.display='none';
         schedule.style.display='block';
