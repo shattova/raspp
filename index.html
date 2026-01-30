@@ -78,6 +78,8 @@
             margin-bottom: 10px;
         }
 
+        body { font-family: 'Montserrat', sans-serif; background-color: #f5f5f5; margin: 0; padding: 20px; } .container { max-width: 440px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); } .welcome { font-size: 48px; text-align: center; margin-bottom: 20px; } .toggle-wrapper { display: flex; justify-content: center; margin-bottom: 20px; } .toggle-container { position: relative; width: 100%; height: 48px; border-radius: 100px; background: #fff; border: 2px solid #ddd; box-shadow: inset 4px 4px 9px rgba(0,0,0,0.25); cursor: pointer; } .toggle-checkbox { display: none; } .toggle-button { position: absolute; top: 7px; left: 8px; width: calc(50% - 16px); height: 32px; border-radius: 16px; background: linear-gradient(#2c2c7a, #0c0c3c); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: bold; transition: 0.3s; } .toggle-checkbox:checked + .toggle-button { left: calc(50% + 8px); background: linear-gradient(#1c5c1c, #0c3c0c); } .toggle-button::after { content: "нечётная неделя"; } .toggle-checkbox:checked + .toggle-button::after { content: "чётная неделя"; } .day { margin-bottom: 30px; padding: 15px; border-radius: 30px; background: linear-gradient(134deg,#ededed,#fff); box-shadow: 0 10px 20px rgba(0,0,0,0.08); } .title_day { font-size: 24px; font-weight: 700; margin-bottom: 15px; } .urok { display: flex; margin-bottom: 10px; } .circle, .circle2 { width: 22px; height: 22px; border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; flex-shrink: 0; } .circle { background: navy; } .circle2 { background: #1B5112; } .lesson { padding-left: 10px; } .name_urok { font-size: 12px; font-weight: 500; margin: 0; } .time_style { font-size: 10px; color: #757575; } #day2 { display: none; } .popup { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #0D0125; color: white; padding: 15px 20px; border-radius: 18px; display: none; z-index: 1000; }
+
         .empty-urok {
             height: 38px;
             margin-bottom: 10px;
@@ -194,6 +196,9 @@
 
 <!-- SCHEDULE -->
 <div class="container" id="schedule" style="display:none;">
+    
+    <div class="toggle-wrapper"> <label class="toggle-container"> <input type="checkbox" class="toggle-checkbox" id="toggleCheckbox"> <div class="toggle-button"></div> </label> </div>
+
     <button class="add-btn" onclick="openAddForm()">＋ добавить пару</button>
 
     <div id="day1">
@@ -259,6 +264,19 @@ const supabaseClient = supabase.createClient(
 </script>
 
 <script>
+    function showSchedule() {
+        document.getElementById('auth').style.display = 'none';
+        document.getElementById('schedule').style.display = 'block';
+        loadSchedule();
+    }
+
+    function openAddForm() {
+        document.getElementById('form').style.display = 'flex';
+    }
+
+</script>
+
+<script>
 const times = {
     1:"8:00–9:35",2:"9:45–11:25",3:"11:35–13:10",
     4:"13:40–15:15",5:"15:25–17:00",6:"17:10–18:45"
@@ -305,24 +323,40 @@ window.renderLesson=function(lesson){
     }
 };
 
-async function addLesson(){
-    const user=(await supabaseClient.auth.getUser()).data.user;
-    if(!user)return;
+async function addLesson() {
+    const { data: userData, error: userError } = await supabaseClient.auth.getUser();
+    if (userError || !userData.user) {
+        alert("Ошибка с авторизацией");
+        return;
+    }
 
-    const lesson={
-        user_id:user.id,
-        day:daySelect.value,
-        week:weekType.value,
-        lesson_num:+lessonNumber.value,
-        title:name.value,
-        teacher:teacher.value,
-        room:room.value
+    const lesson = {
+        user_id: userData.user.id,
+        day: document.getElementById('daySelect').value,
+        week: document.getElementById('weekType').value,
+        lesson_num: +document.getElementById('lessonNumber').value,
+        title: document.getElementById('name').value,
+        teacher: document.getElementById('teacher').value,
+        room: document.getElementById('room').value
     };
 
-    await supabase.from('schedule').insert(lesson);
-    renderLesson(lesson);
-    document.getElementById('form').style.display='none';
+    if (!lesson.title) { 
+        alert("Введите название пары!"); 
+        return;
+    }
+
+    const { data, error } = await supabaseClient.from('schedule').insert(lesson).select();
+    if (error) {
+        console.error(error);
+        alert("Ошибка при сохранении: " + error.message);
+        return;
+    }
+
+    renderLesson(data[0]);
+    document.getElementById('form').style.display = 'none';
 }
+
+
 
 async function loadSchedule(){
     const user=(await supabaseClient.auth.getUser()).data.user;
@@ -369,6 +403,8 @@ async function signIn() {
     }
 }
 
+const auth = document.getElementById('auth');
+const schedule = document.getElementById('schedule');
 
 (async()=>{
     const {data:{session}}=await supabaseClient.auth.getSession();
@@ -378,6 +414,32 @@ async function signIn() {
         loadSchedule();
     }
 })();
+
+const checkbox = document.getElementById('toggleCheckbox');
+const day1 = document.getElementById('day1');
+const day2 = document.getElementById('day2');
+
+/* восстановление выбранной недели */
+const savedWeek = localStorage.getItem('week');
+if (savedWeek === 'even') {
+    checkbox.checked = true;
+    day1.style.display = 'none';
+    day2.style.display = 'block';
+}
+
+/* переключение */
+checkbox.addEventListener('change', () => {
+    if (checkbox.checked) {
+        day1.style.display = 'none';
+        day2.style.display = 'block';
+        localStorage.setItem('week', 'even');
+    } else {
+        day1.style.display = 'block';
+        day2.style.display = 'none';
+        localStorage.setItem('week', 'odd');
+    }
+});
+
 </script>
 
 </body>
