@@ -329,17 +329,43 @@ async function loadSchedule(){
     data.forEach(l=>renderLesson(l));
 }
 
-async function signUp(){
-    await supabase.auth.signUp({email:email.value,password:password.value});
-    auth-status.innerText='Зарегистрировано, войдите';
+async function signUp() {
+    alert('signUp вызвалась');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+
+    const email = emailInput.value;
+    const password = passwordInput.value;
+
+    const { error } = await supabase.auth.signUp({
+        email,
+        password
+    });
+
+    document.getElementById('auth-status').innerText = error
+        ? error.message
+        : 'Регистрация успешна, теперь войдите';
 }
 
-async function signIn(){
-    await supabase.auth.signInWithPassword({email:email.value,password:password.value});
-    auth.style.display='none';
-    schedule.style.display='block';
-    loadSchedule();
+
+async function signIn() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+    });
+
+    document.getElementById('auth-status').innerText = error
+        ? error.message
+        : 'Вы вошли';
+
+    if (!error) {
+        showSchedule();
+    }
 }
+
 
 (async()=>{
     const {data:{session}}=await supabase.auth.getSession();
