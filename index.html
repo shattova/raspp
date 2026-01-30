@@ -173,6 +173,10 @@
             cursor: pointer;
         }
 
+        .auth-box input {
+            font-size: 16px;
+        }
+
         .auth-box button.secondary {
             background: #eaeaea;
             color: #333;
@@ -318,9 +322,12 @@ function rebuildDay(day){
     day.innerHTML='';
     if(title)day.appendChild(title);
 
-    for(let i=Math.min(...nums);i<=Math.max(...nums);i++){
-        day.appendChild(map[i]||Object.assign(document.createElement('div'),{className:'empty-urok'}));
+    const minNum = 1;
+    const maxNum = 6; 
+    for(let i = minNum; i <= maxNum; i++){
+        day.appendChild(map[i] || Object.assign(document.createElement('div'), {className:'empty-urok'}));
     }
+
 }
 
 window.renderLesson=function(lesson){
