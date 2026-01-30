@@ -177,10 +177,34 @@
             background: #eaeaea;
             color: #333;
         }
+
+        #logoutBtn {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: #aa0000;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 4000;
+    font-size: 16px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
     </style>
 </head>
 
 <body>
+
+<button id="logoutBtn" title="Выйти"></button>
+
 
 <!-- AUTH -->
 <div class="auth" id="auth">
@@ -196,6 +220,7 @@
 
 <!-- SCHEDULE -->
 <div class="container" id="schedule" style="display:none;">
+
     
     <div class="toggle-wrapper"> <label class="toggle-container"> <input type="checkbox" class="toggle-checkbox" id="toggleCheckbox"> <div class="toggle-button"></div> </label> </div>
 
@@ -439,6 +464,23 @@ checkbox.addEventListener('change', () => {
         localStorage.setItem('week', 'odd');
     }
 });
+
+document.getElementById('logoutBtn').addEventListener('click', async () => {
+    const { error } = await supabaseClient.auth.signOut();
+    if (error) {
+        alert("Ошибка выхода: " + error.message);
+        return;
+    }
+
+    // Прячем расписание, показываем авторизацию
+    schedule.style.display = 'none';
+    auth.style.display = 'flex';
+
+    // Можно очистить DOM расписания
+    document.querySelectorAll('.urok').forEach(el => el.remove());
+});
+
+document.getElementById('logoutBtn').innerText = '⏻';
 
 </script>
 
